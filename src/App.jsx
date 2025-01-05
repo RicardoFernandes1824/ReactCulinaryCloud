@@ -12,6 +12,7 @@ function App() {
     const [emailRegister, setEmailRegister] = useState("")
     const [name, setName] = useState("")
     const [password, setPassword] = useState("")
+    const [id, setId] = useState("")
     let navigate = useNavigate();
 
     async function handleLogin(e){
@@ -20,6 +21,7 @@ function App() {
             const requestBody = {email:emailLogin, password}
             const response = await axios.post('http://localhost:8080/login', requestBody)
             localStorage.setItem("Name", response.data.name)
+            localStorage.setItem("Id", response.data.id)
             navigate("/homepage")
         } catch (error) {
             console.log(error);

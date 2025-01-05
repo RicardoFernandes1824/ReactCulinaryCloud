@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { useState } from "react";
-import logo from './assets/img/logo.png'; // Import the logo
+import CulinaryCloudLogo from "./assets/img/CulinaryCloud1.png";
 
 function NavBar() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -9,8 +9,11 @@ function NavBar() {
         <nav className="bg-green-800 text-white">
             <div className="flex justify-between items-center h-16 px-4 lg:px-20">
                 {/* Logo */}
-                <div className="text-xl font-bold">
-                    CulinaryCloud
+                <div className="flex items-center">
+                    <img src={CulinaryCloudLogo} alt="CulinaryCloud Logo" className="h-8 w-8 mr-2" />
+                    <div className="text-xl font-bold">
+                        CulinaryCloud
+                    </div>
                 </div>
 
                 {/* Dropdown Toggle Button */}
@@ -39,10 +42,10 @@ function NavBar() {
                     {dropdownOpen && (
                         <div className="absolute right-0 mt-2 bg-green-700 rounded shadow-lg w-40">
                             <ul className="flex flex-col text-left">
-                                <Link to="/home" className="block px-4 py-2 hover:bg-green-600">
+                                <Link to="/homepage" className="block px-4 py-2 hover:bg-green-600">
                                     Home
                                 </Link>
-                                <Link to="/my-recipes" className="block px-4 py-2 hover:bg-green-600">
+                                <Link to="/myRecipes" className="block px-4 py-2 hover:bg-green-600">
                                     My Recipes
                                 </Link>
                                 <Link to="/explore" className="block px-4 py-2 hover:bg-green-600">
@@ -59,10 +62,10 @@ function NavBar() {
                 {/* Regular Navbar for Large Screens */}
                 <div className="hidden lg:flex">
                     <ul className="flex gap-8 text-lg">
-                        <Link to="/home" className="hover:bg-green-700 px-4 py-2 rounded">
+                        <Link to="/homepage" className="hover:bg-green-700 px-4 py-2 rounded">
                             Home
                         </Link>
-                        <Link to="/my-recipes" className="hover:bg-green-700 px-4 py-2 rounded">
+                        <Link to="/myRecipes" className="hover:bg-green-700 px-4 py-2 rounded">
                             My Recipes
                         </Link>
                         <Link to="/explore" className="hover:bg-green-700 px-4 py-2 rounded">
