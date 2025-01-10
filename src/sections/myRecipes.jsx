@@ -7,6 +7,7 @@ function MyRecipes() {
   const [loading, setLoading] = useState(true); // State to show loading spinner
   const [error, setError] = useState(null); // State to handle API errors
   const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage
+  const token = localStorage.getItem('Token'); // Assuming userId is stored in localStorage
   const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
   useEffect(() => {
@@ -19,7 +20,6 @@ function MyRecipes() {
 
     async function fetchRecipes() {
       try {
-        const token = localStorage.getItem("token"); // Assuming you store the token in localStorage after login
         const response = await fetch(`http://localhost:8080/users/${userId}/recipe`, {
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -30,6 +30,7 @@ function MyRecipes() {
           throw new Error(errorMessage);
         }
         const data = await response.json();
+        data.forEach(recipe => console.log("Cover Image:", recipe.coverImage));
         setRecipes(data); // Update state with fetched recipes
       } catch (err) {
         setError(err.message); // Set error message in case of failure
@@ -61,7 +62,7 @@ function MyRecipes() {
                 className="border border-gray-300 rounded-lg shadow-md overflow-hidden bg-white"
               >
                 <img
-                  src={recipe.attachments?.[0]?.url || "placeholder.jpg"}
+                  src={recipe?.coverImage ? `http://localhost:8080/static/${recipe?.coverImage}` : "placeholder.jpg"}
                   alt={recipe.name}
                   className="w-full h-48 object-cover"
                 />
