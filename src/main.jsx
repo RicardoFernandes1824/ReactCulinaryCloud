@@ -8,6 +8,7 @@ import NavBar from './navbar.jsx';
 import MyRecipes from './sections/myRecipes.jsx';
 import Explore from './sections/explore.jsx';
 import Favourites from './sections/favourites.jsx';
+import Recipe from './sections/recipe.jsx';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +20,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/myRecipes" element={<MyRecipes/>} />
       <Route path="/explore" element={<Explore/>} />
       <Route path="/favourites" element={<Favourites/>} />
+      <Route path='/recipe/:id' element={<Recipe/>} />
     </Routes>
   </BrowserRouter>
   </StrictMode>,

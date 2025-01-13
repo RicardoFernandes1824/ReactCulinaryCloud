@@ -31,7 +31,7 @@ function App() {
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.response.data.message
+                text: 'We have a problem with your login'
             });
         }
     }
@@ -41,13 +41,13 @@ function App() {
         try {
             const requestBody = {email:emailRegister, name, password}
             const response = await axios.post('http://localhost:8080/register', requestBody)
-            console.log(email,name,password)
+            console.log(emailRegister,name,password)
         } catch (error) {
             console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.response.data.message
+                text: 'We have a problem with your registration'
             });
         }
     }

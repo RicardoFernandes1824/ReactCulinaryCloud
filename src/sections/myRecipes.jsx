@@ -62,7 +62,7 @@ function MyRecipes() {
                 className="border border-gray-300 rounded-lg shadow-md overflow-hidden bg-white"
               >
                 <img
-                  src={recipe?.coverImage ? `http://localhost:8080/static/${recipe?.coverImage}` : "placeholder.jpg"}
+                  src={recipe?.coverImage !== "" ? `http://localhost:8080/static/${recipe?.coverImage}` : "https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg"}
                   alt={recipe.name}
                   className="w-full h-48 object-cover"
                 />
