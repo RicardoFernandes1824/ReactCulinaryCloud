@@ -1,19 +1,16 @@
-import NavBar from "../navbar";
+import NavBar from "../components/navbar";
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import {RecipeCardComponent} from "../components/card.jsx"; // Import useNavigate
 
 function Favourites() {
 
   const [recipes, setRecipes] = useState([]); // State to store recipes
-  const [favourite, setFavourite] = useState([]);
   const [loading, setLoading] = useState(true); // State to show loading spinner
   const [error, setError] = useState(null); // State to handle API errors
   const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage
   const token = localStorage.getItem('Token'); // Assuming userId is stored in localStorage
-  const navigate = useNavigate(); // Initialize useNavigate hook for navigation
 
   useEffect(() => {
-    console.log("User ID:", userId); // Log the value for debugging
     if (!userId) {
       setError("User not found.");
       setLoading(false);
@@ -32,7 +29,6 @@ function Favourites() {
           throw new Error(errorMessage);
         }
         const data = await response.json();
-        data.forEach(recipe => console.log("Cover Image:", recipe.coverImage));
         setRecipes(data); // Update state with fetched recipes
       } catch (err) {
         setError(err.message); // Set error message in case of failure
@@ -49,10 +45,9 @@ function Favourites() {
       <NavBar />
       <main className="w-full min-h-screen bg-gray-100">
         <div className="flex items-center justify-between w-full px-8 py-4 bg-white shadow-md">
-          <h2 className="text-2xl font-bold text-gray-800">My Recipe Favorites</h2>
+          <h2 className="text-2xl font-bold text-gray-800">My Recipe Favourites</h2>
           <div className="flex items-center space-x-11">
 
-            {/* Search Input */}
             <input
               type="text"
               placeholder="Search recipes..."
@@ -74,45 +69,7 @@ function Favourites() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
               {recipes.map((recipe) => (
-                <div
-                  key={recipe.id}
-                  className="border border-gray-300 rounded-lg shadow-md overflow-hidden bg-white"
-                >
-                  <img
-                    src={recipe?.coverImage !== "" ? `http://localhost:8080/static/${recipe?.coverImage}` : "https://t3.ftcdn.net/jpg/01/79/59/92/360_F_179599293_7mePKnajSM4bggDa8NkKpcAHKl3pow2l.jpg"}
-                    alt={recipe.name}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-xl font-semibold mb-2">{recipe.name}</h3>
-                    <p className="text-sm text-gray-500 mb-2">
-                      Category: <span className="font-medium">{recipe.category}</span>
-                    </p>
-                    <p className="text-gray-600 mb-4">
-                      {recipe.notes || "No additional notes available."}
-                    </p>
-                    <div className="flex justify-between items-center">
-                      <span
-                        className={`text-sm font-medium ${recipe.public ? "text-green-700" : "text-red-700"
-                          }`}
-                      >
-                        {recipe.public ? "Public" : "Private"}
-                      </span>
-                      <span
-                        className={`text-sm font-medium text-green-700 ${recipe.authorId
-                          }`}
-                      >
-                        {recipe.author.name}
-                      </span>
-                      <button
-                        className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800"
-                        onClick={() => navigate(`/recipe/${recipe.id}`)} // Dynamically navigate to recipe detail page
-                      >
-                        View Recipe
-                      </button>
-                    </div>
-                  </div>
-                </div>
+                  <RecipeCardComponent key={recipe.id} recipe={recipe} isFavouriteProp={true}/>
               ))}
             </div>
           )}

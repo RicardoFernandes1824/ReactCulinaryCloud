@@ -4,14 +4,13 @@ import App from './App.jsx'
 import './index.css'
 import { BrowserRouter, Routes, Route } from "react-router";
 import HomePage from './homepage.jsx';
-import NavBar from './navbar.jsx';
+import NavBar from './components/navbar.jsx';
 import MyRecipes from './sections/myRecipes.jsx';
 import Explore from './sections/explore.jsx';
 import Favourites from './sections/favourites.jsx';
 import Recipe from './sections/recipe.jsx';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<App/>} />
@@ -23,5 +22,4 @@ createRoot(document.getElementById('root')).render(
       <Route path='/recipe/:id' element={<Recipe/>} />
     </Routes>
   </BrowserRouter>
-  </StrictMode>,
 )

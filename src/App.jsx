@@ -21,13 +21,12 @@ function App() {
         try {
             const requestBody = {email:emailLogin, password}
             const response = await axios.post('http://localhost:8080/login', requestBody)
-            console.log(response.data)
             localStorage.setItem("Name", response.data.name)
             localStorage.setItem("Id", response.data.id)
             localStorage.setItem("Token", response.data.token)
             navigate("/homepage")
         } catch (error) {
-            console.log(error);
+            console.error(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -41,9 +40,8 @@ function App() {
         try {
             const requestBody = {email:emailRegister, name, password}
             const response = await axios.post('http://localhost:8080/register', requestBody)
-            console.log(emailRegister,name,password)
         } catch (error) {
-            console.log(error);
+            console.error(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
