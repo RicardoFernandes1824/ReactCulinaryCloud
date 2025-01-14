@@ -3,7 +3,7 @@ import {CiStar} from "react-icons/ci";
 import React, {useState} from "react";
 import {Link} from "react-router";
 
-export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined}) => {
+export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined, refreshRecipes=undefined}) => {
     const token = localStorage.getItem('Token');
     const userId = localStorage.getItem('Id');
     const [isFavourite, setIsFavourite] = useState(isFavouriteProp ?? recipe.isFavorite);
@@ -56,6 +56,7 @@ export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined}) => {
 
             return newIsFavourite;
         });
+        refreshRecipes && refreshRecipes();
     };
 
 

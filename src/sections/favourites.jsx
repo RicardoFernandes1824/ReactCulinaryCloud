@@ -9,6 +9,11 @@ function Favourites() {
   const [error, setError] = useState(null); // State to handle API errors
   const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage
   const token = localStorage.getItem('Token'); // Assuming userId is stored in localStorage
+  const [refreshTrigger, setRefreshTrigger] = useState(false);
+
+  const refreshRecipes = () => {
+    setRefreshTrigger((prev) => !prev);
+  };
 
   useEffect(() => {
     if (!userId) {
@@ -38,7 +43,7 @@ function Favourites() {
     }
 
     fetchRecipes();
-  }, [userId]); // Re-run the effect if userId changes
+  }, [userId, refreshTrigger]); // Re-run the effect if userId changes
 
   return (
     <>
@@ -69,7 +74,7 @@ function Favourites() {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
               {recipes.map((recipe) => (
-                  <RecipeCardComponent key={recipe.id} recipe={recipe} isFavouriteProp={true}/>
+                  <RecipeCardComponent key={recipe.id} recipe={recipe} isFavouriteProp={true} refreshRecipes={refreshRecipes} />
               ))}
             </div>
           )}
