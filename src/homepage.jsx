@@ -81,7 +81,7 @@ function HomePage() {
         body: formData,
       });
       if (!response.ok) {
-        throw new Error(errorMessage);
+        throw new Error("Error");
       }
       const data = await response.json();
 
