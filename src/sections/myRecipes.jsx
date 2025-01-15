@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import NavBar from "../components/navbar";
 import {RecipeCardComponent} from "../components/card.jsx";
-import {CreateRecipeModal} from "../components/modal.tsx";
+import {CreateRecipeModal} from "../components/modal.jsx";
 
 function MyRecipes() {
     const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage

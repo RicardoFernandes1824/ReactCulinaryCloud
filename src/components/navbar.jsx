@@ -54,6 +54,12 @@ function NavBar() {
                                 <Link to="/favourites" className="block px-4 py-2 hover:bg-green-600">
                                     Favourites
                                 </Link>
+                                <Link to="/profile" className="hover:bg-green-700 px-4 py-2 rounded">
+                                    Profile
+                                </Link>
+                                <Link to="/" className="bg-white text-green-800 hover:border-green-900 px-4 py-2 rounded">
+                                    Logout
+                                </Link>
                             </ul>
                         </div>
                     )}
@@ -74,9 +80,15 @@ function NavBar() {
                         <Link to="/favourites" className="hover:bg-green-700 px-4 py-2 rounded">
                             Favourites
                         </Link>
+                        <Link to="/profile" className="hover:bg-green-700 px-4 py-2 rounded">
+                            Profile
+                        </Link>
+                        <Link to="/" className="bg-white text-green-800 border-2 hover:border-green-900 px-4 py-2 rounded">
+                            Logout
+                        </Link>
                     </ul>
                 </div>
-                </div>
+            </div>
         </nav>
     );
 }

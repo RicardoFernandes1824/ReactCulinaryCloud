@@ -9,6 +9,7 @@ import MyRecipes from './sections/myRecipes.jsx';
 import Explore from './sections/explore.jsx';
 import Favourites from './sections/favourites.jsx';
 import Recipe from './sections/recipe.jsx';
+import Profile from './sections/profile.jsx';
 
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
@@ -20,6 +21,7 @@ createRoot(document.getElementById('root')).render(
       <Route path="/explore" element={<Explore/>} />
       <Route path="/favourites" element={<Favourites/>} />
       <Route path='/recipe/:id' element={<Recipe/>} />
+      <Route path='/profile' element={<Profile/>} />
     </Routes>
   </BrowserRouter>
 )
