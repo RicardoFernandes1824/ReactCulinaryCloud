@@ -45,18 +45,19 @@ export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined, refres
     }
 
     const toggleFavorite = async (recipeId) => {
-        setIsFavourite((prevIsFavourite) => {
-            const newIsFavourite = !prevIsFavourite;
+        const newIsFavourite = !isFavourite;
 
-            if (newIsFavourite) {
-                addRecipeToFavourites(recipeId);
-            } else {
-                removeRecipeFromFavourites(recipeId);
-            }
+        if (newIsFavourite) {
+            await addRecipeToFavourites(recipeId);
+        } else {
+            await removeRecipeFromFavourites(recipeId);
+        }
 
-            return newIsFavourite;
-        });
-        refreshRecipes && refreshRecipes();
+        setIsFavourite(newIsFavourite);
+
+        if (refreshRecipes) {
+            refreshRecipes();
+        }
     };
 
 
