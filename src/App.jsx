@@ -69,7 +69,7 @@ function App() {
               <span className="text-green-800">Culinary</span>Cloud
             </div>
             <h2 className="text-3xl font-bold text-center text-green-800 mb-2">Sign in to Account</h2>
-            <div className="border-2 w-[30%] border-green-800 inline-block mb-4"></div>
+            <div className="border-2 w-[100%] border-green-800 inline-block mb-4"></div>
             <div className="flex flex-col items-center">
               <div className="bg-gray-100 w-64 p-3 mb-4 rounded-lg flex items-center focus-within:ring-2 focus-within:ring-green-500">
                 <FaEnvelope className="text-gray-400 mr-3" />
@@ -106,7 +106,8 @@ function App() {
           {/* Right Section (Register Form) */}
           <div className="lg:w-1/2 bg-green-800 text-white p-6 flex flex-col justify-center">
             <p className="text-3xl font-bold mb-4">Love to cook?</p>
-            <div className="border-2 w-10 border-white inline-block mb-2"></div>
+            <p className="text-3xl font-bold mb-4">Join Us! Sign Up Today</p>
+            <div className="border-2 w-[100%] border-white inline-block mb-2"></div>
             <div className="flex flex-col items-center">
               <div className="bg-gray-100 w-64 p-3 mb-4 rounded-lg flex items-center focus-within:ring-2 focus-within:ring-white">
                 <FaEnvelope className="text-gray-400 mr-3" />

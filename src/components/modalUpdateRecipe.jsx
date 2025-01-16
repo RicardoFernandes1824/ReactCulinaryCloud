@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2";
 
 export const UpdateRecipeModal = ({
     userId, token, recipeId, toggleModal
@@ -27,9 +28,10 @@ export const UpdateRecipeModal = ({
         setFileUpload(file);
     };
 
-    async function updateRecipe() {
+    async function updateRecipe(field, value) {
         try {
             const formData = new FormData();
+            formData.append(field, value);
             formData.append('name', recipeName);
             formData.append('category', recipeCategory);
             formData.append('notes', recipeNotes);
@@ -50,14 +52,28 @@ export const UpdateRecipeModal = ({
                 body: formData,
             });
             if (!response.ok) {
-                throw new Error("Error");
+                throw new Error("Error updating recipe");
             }
-            toggleModal();
+
+            // Show success alert using SweetAlert2
+            Swal.fire({
+                title: 'Recipe Updated!',
+                text: 'Your recipe has been successfully updated.',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then(() => {
+                window.location.reload(); // Refresh the page after the alert
+            });
+
+            toggleModal(); // Close modal after update
         } catch (err) {
-            console.error(err)
-        } finally {
-            toggleModal();
-            
+            console.error(err);
+            Swal.fire({
+                title: 'Error!',
+                text: 'There was an error updating your recipe.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
         }
     }
 
@@ -85,15 +101,14 @@ export const UpdateRecipeModal = ({
 
                 {/* Recipe Name and Category Row */}
                 <div className="mb-4 flex space-x-4">
-                    {/* Recipe Name */}
                     <div className="flex-1">
                         <label className="block text-gray-700 font-bold mb-2">Recipe Name</label>
                         <input
                             type="text"
                             placeholder="Enter recipe name"
                             className="w-full border border-gray-300 rounded px-4 py-2"
-                            value={recipeName} // Bind input to state
-                            onChange={(e) => setRecipeName(e.target.value)} // Update state on input change
+                            value={recipeName} 
+                            onChange={(e) => setRecipeName(e.target.value)} 
                         />
                     </div>
 

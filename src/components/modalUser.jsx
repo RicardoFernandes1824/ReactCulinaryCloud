@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from "sweetalert2"; // Import SweetAlert2
 
 export const UpdateUserModal = ({ userId, token, refreshProfile, toggleModal }) => {
     const [userName, setUserName] = useState("");
@@ -41,16 +42,28 @@ export const UpdateUserModal = ({ userId, token, refreshProfile, toggleModal }) 
                     throw new Error("Error updating user data");
                 }
             } else {
-                alert("User updated successfully!");
-                toggleModal();
+                // Success: Show success alert using SweetAlert2
+                Swal.fire({
+                    title: 'User Updated!',
+                    text: 'Your profile has been successfully updated.',
+                    icon: 'success',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    refreshProfile();
+                });
             }
-            refreshProfile();
-            toggleModal();
+
+            toggleModal(); // Close the modal after update
         } catch (err) {
             console.error(err);
-            alert("Failed to update user.");
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to update user.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
         } finally {
-            toggleModal();
+            toggleModal(); // Ensure the modal is closed after the operation
         }
     }
 
