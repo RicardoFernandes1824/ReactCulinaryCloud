@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 
-export const CreateRecipeModal = ({
-    userId, token, refreshRecipes, toggleModal
+export const UpdateRecipeModal = ({
+    userId, token, recipeId, toggleModal
 }) => {
+
     const [isPublic, setIsPublic] = useState(false);
     const [photo, setPhoto] = useState(null);
     const [fileUpload, setFileUpload] = useState(null);
-    const [photoGallery, setPhotoGallery] = useState(null);
-    const [photoGalleryFiles, setPhotoGalleryFiles] = useState(null);
 
     const [recipeName, setRecipeName] = useState("");
     const [recipeCategory, setRecipeCategory] = useState("");
     const [recipeNotes, setRecipeNotes] = useState("");
-    const [recipeTips, setRecipeTips] = useState("");
 
     const handleInputChange = (index, field, value) => {
         const updatedRows = [...rows];
@@ -29,15 +27,8 @@ export const CreateRecipeModal = ({
         setFileUpload(file);
     };
 
-    const handleGalleryUpload = (e) => {
-        const files = e.target.files;
-        setPhotoGallery(Array.from(files).map((file) => URL.createObjectURL(file)));
-        setPhotoGalleryFiles(files);
-    };
-
-    async function createRecipe() {
+    async function updateRecipe() {
         try {
-            // First Step: Create/Save the receipe
             const formData = new FormData();
             formData.append('name', recipeName);
             formData.append('category', recipeCategory);
@@ -45,16 +36,14 @@ export const CreateRecipeModal = ({
             formData.append('authorId', userId);
             formData.append('public', isPublic);
 
-            // Add ingredients as a JSON string
             formData.append('ingredients', JSON.stringify(rows));
 
-            // Add the cover image
             if (fileUpload) {
                 formData.append('sampleFile', fileUpload);
             }
 
-            const response = await fetch(`http://localhost:8080/recipe`, {
-                method: 'POST',
+            const response = await fetch(`http://localhost:8080/users/${userId}/recipe/${recipeId}`, {
+                method: 'PATCH',
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -63,57 +52,17 @@ export const CreateRecipeModal = ({
             if (!response.ok) {
                 throw new Error("Error");
             }
-            const data = await response.json();
-
-            // Second Step: Save tips and photos
-            const recipeId = data.id;
-
-            if (recipeTips) {
-                const tipsRequest = await fetch(`http://localhost:8080/upload/${recipeId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: JSON.stringify({ tips: recipeTips })
-                });
-
-
-                if (!tipsRequest.ok) {
-                    throw new Error('Failed to save tips');
-                }
-            }
-
-            if (photoGalleryFiles) {
-                const galleryFormData = new FormData();
-                Array.from(photoGalleryFiles).forEach((file) => {
-                    galleryFormData.append('sampleFile', file);
-                });
-                const galleryRequest = await fetch(`http://localhost:8080/upload/${recipeId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    body: galleryFormData,
-                });
-
-                if (!galleryRequest.ok) {
-                    throw new Error('Failed to save gallery');
-                }
-            }
-            refreshRecipes();
             toggleModal();
         } catch (err) {
             console.error(err)
         } finally {
             toggleModal();
+            
         }
     }
 
     // Add Rows
-    const [rows, setRows] = useState([
-        { quantity: "", measurement: "", name: "" },
-    ]);
+    const [rows, setRows] = useState([]);
 
     return (
         <div
@@ -129,9 +78,9 @@ export const CreateRecipeModal = ({
                 className="bg-white w-[90%] h-[90%] rounded-lg shadow-lg p-6 overflow-auto"
                 onClick={(e) => e.stopPropagation()} // Prevent click inside modal from propagating to overlay
             >
-                <h1 className="text-3xl font-bold text-green-800">Create Your Recipe</h1>
+                <h1 className="text-3xl font-bold text-green-800">Update Your Recipe</h1>
                 <p className="text-gray-700 mb-6">
-                    Let's create a recipe worth sharing!
+                    Let's update a recipe worth sharing!
                 </p>
 
                 {/* Recipe Name and Category Row */}
@@ -254,36 +203,6 @@ export const CreateRecipeModal = ({
                     </div>
                 )}
 
-                {/* Recipe Photos Upload */}
-                <h2 className="text-xl font-bold text-green-800 mt-6">Upload Recipe Photos</h2>
-                <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleGalleryUpload}
-                    className="block mt-2 mb-4 ml-1"
-                />
-                <div className="flex space-x-4">
-                    {photoGallery && (photoGallery).map((photo, index) => (
-                        <div key={index} className="mb-4">
-                            <img
-                                src={photo}
-                                alt="Uploaded"
-                                className="w-32 h-32 object-cover rounded"
-                            />
-                        </div>
-                    ))}
-                </div>
-
-                {/* Tips Section */}
-                <h2 className="text-xl font-bold text-green-800 mt-6">Tips</h2>
-                <textarea
-                    placeholder="Share some tips..."
-                    className="w-full border border-gray-300 rounded px-4 py-2 mt-2 h-24"
-                    value={recipeTips}
-                    onChange={(e) => setRecipeTips(e.target.value)}
-                ></textarea>
-
                 {/* Make Public Toggle */}
                 <div className="flex items-center space-x-4 mt-6">
                     <label className="text-gray-700 font-bold">Want to showcase your recipe to
@@ -298,7 +217,7 @@ export const CreateRecipeModal = ({
 
                 {/* Save Button */}
                 <button
-                    onClick={() => createRecipe()}
+                    onClick={() => updateRecipe()}
                     className="mt-6 px-4 py-2 bg-green-800 text-white rounded hover:bg-green-700 mr-2"
                 >
                     Save Recipe

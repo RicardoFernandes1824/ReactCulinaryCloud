@@ -1,7 +1,7 @@
 import NavBar from "./components/navbar";
 import React, {useState} from "react";
 import {Link} from "react-router";
-import {CreateRecipeModal} from "./components/modal";
+import {CreateRecipeModal} from "./components/modal.jsx";
 
 function HomePage() {
     const name = localStorage.getItem('Name'); // Retrieve the name from localStorage

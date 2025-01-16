@@ -11,6 +11,7 @@ function App() {
   const [emailRegister, setEmailRegister] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordRegister, setPasswordRegister] = useState("");
   const [isUserCreated, setIsUserCreated] = useState(false);
   let navigate = useNavigate();
 
@@ -36,11 +37,11 @@ function App() {
   async function handleRegister(e) {
     e.preventDefault();
     try {
-      const requestBody = { email: emailRegister, name, password };
+      const requestBody = { email: emailRegister, name, password: passwordRegister };
       const response = await axios.post('http://localhost:8080/register', requestBody);
       setEmailRegister("");
       setName("");
-      setPassword("");
+      setPasswordRegister("");
       setIsUserCreated(true);
       Swal.fire({
         icon: "success",
@@ -130,10 +131,10 @@ function App() {
               <div className="bg-gray-100 w-64 p-3 mb-6 rounded-lg flex items-center focus-within:ring-2 focus-within:ring-white">
                 <MdLockOutline className="text-gray-400 mr-3" />
                 <input
-                  onChange={e => setPassword(e.target.value)}
+                  onChange={e => setPasswordRegister(e.target.value)}
                   type="password"
                   placeholder="Password"
-                  value={password}
+                  value={passwordRegister}
                   className="bg-gray-100 outline-none text-sm flex-1 text-black"
                 />
               </div>

@@ -26,6 +26,7 @@ export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined, refres
             console.error(`Request failed wiht error: ${error}`);
         }
     }
+
     const removeRecipeFromFavourites = async (recipeId) => {
         try {
             const response = await fetch(`http://localhost:8080/favourites/${recipeId}`, {
@@ -71,7 +72,8 @@ export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined, refres
                 alt={recipe.name}
                 className="w-full h-48 object-cover"
             />
-            <div className="p-4">
+            
+            <div className="p-4 flex flex-col flex-grow">
                 <h3 className="text-xl font-semibold mb-2">{recipe.name}</h3>
                 <p className="text-sm text-gray-500 mb-2">
                     Category: <span className="font-medium">{recipe.category}</span>
@@ -79,7 +81,7 @@ export const RecipeCardComponent = ({recipe, isFavouriteProp = undefined, refres
                 <p className="text-gray-600 mb-4">
                     {recipe.notes || "No additional notes available."}
                 </p>
-                <div className="flex justify-between items-center">
+                <div className="flex justify-between items-center mt-auto">
                       <span
                           className={`text-sm font-medium ${recipe.public ? "text-green-700" : "text-red-700"
                           }`}

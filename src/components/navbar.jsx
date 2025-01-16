@@ -5,6 +5,10 @@ import CulinaryCloudLogo from "../assets/img/CulinaryCloud1.png"
 function NavBar() {
     const [dropdownOpen, setDropdownOpen] = useState(false);
 
+    function logout() {
+        localStorage.clear();
+    }
+
     return (
         <nav className="bg-green-800 text-white">
             <div className="flex justify-between items-center h-16 px-4 lg:px-20">
@@ -83,7 +87,7 @@ function NavBar() {
                         <Link to="/profile" className="hover:bg-green-700 px-4 py-2 rounded">
                             Profile
                         </Link>
-                        <Link to="/" className="bg-white text-green-800 border-2 hover:border-green-900 px-4 py-2 rounded">
+                        <Link onClick={logout} to="/" className="bg-white text-green-800 border-2 hover:border-green-900 px-4 py-2 rounded">
                             Logout
                         </Link>
                     </ul>

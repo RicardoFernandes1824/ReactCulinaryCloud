@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import NavBar from "../components/navbar";
+import Swal from 'sweetalert2';
+import { useNavigate } from 'react-router-dom';
+import { UpdateRecipeModal } from "../components/modalUpdateRecipe"
 
 const Recipe = () => {
     const { id } = useParams();
     const location = useLocation();
     const { publicRecipe } = location.state;
     const [recipe, setRecipe] = useState(null);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const userId = localStorage.getItem('Id');
     const token = localStorage.getItem('Token');
+
+    const navigate = useNavigate();
 
     const url = publicRecipe ? `http://localhost:8080/recipe/${id}` : `http://localhost:8080/users/${userId}/recipe/${id}`;
 
@@ -31,6 +37,44 @@ const Recipe = () => {
         return <div>Loading...</div>;
     }
 
+    const toggleModal = () => {
+        setIsModalOpen(!isModalOpen);
+    };
+
+    const handleDelete = async () => {
+        const result = await Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to undo this action!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!',
+            cancelButtonText: 'Cancel',
+        });
+
+        if (result.isConfirmed) {
+            try {
+                const response = await fetch(`http://localhost:8080/users/${userId}/recipe/${id}`, {
+                    method: "DELETE",
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    Swal.fire('Deleted!', 'Your recipe has been deleted.', 'success');
+                    navigate(-1);
+                } else {
+                    Swal.fire('Error!', 'Something went wrong while deleting the recipe.', 'error');
+                }
+            } catch (error) {
+                Swal.fire('Error!', 'An error occurred while deleting the recipe.', 'error');
+            }
+        }
+    };
+    console.log(recipe)
+
     return (
         <>
             <NavBar />
@@ -42,6 +86,10 @@ const Recipe = () => {
                         alt={recipe.name}
                         className="w-full h-64 object-cover rounded-lg mb-4"
                     />
+                </div>
+
+                <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
+                    <h2 className="text-xl font-semibold mb-2"><span className='text-2xl font-bold text-green-800 mb-4'>Author: </span>{recipe.author.name}</h2>
                 </div>
 
                 <div className="bg-white shadow-lg rounded-lg p-6 mb-6">
@@ -95,22 +143,30 @@ const Recipe = () => {
                         </div>
                     </div>
                 )}
+                {userId == recipe.authorId &&
+                    <div className="flex justify-between mt-6">
+                        <button
+                            onClick={toggleModal}
+                            className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700"
+                        >
+                            Update Recipe
+                        </button>
+                        {isModalOpen && (<UpdateRecipeModal
+                            userId={userId}
+                            token={token}
+                            recipeId={recipe.id}
+                            toggleModal={toggleModal}
+                            navigate
+                        />
+                        )}
 
-                <div className="flex justify-between mt-6">
-                    <button
-                        //onClick={handleUpdate}
-                        className="px-6 py-2 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-700"
-                    >
-                        Update Recipe
-                    </button>
-
-                    <button
-                        //onClick={handleDelete}
-                        className="px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400"
-                    >
-                        Delete Recipe
-                    </button>
-                </div>
+                        <button
+                            onClick={handleDelete}
+                            className="px-6 py-2 bg-red-600 text-white rounded-lg shadow-md hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-400"
+                        >
+                            Delete Recipe
+                        </button>
+                    </div>}
             </div>
         </>
     );

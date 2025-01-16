@@ -107,7 +107,6 @@ const Profile = () => {
                             refreshProfile={refreshProfile}
                             toggleModal={toggleModal}
                         />
-
                         )}
                     </div>
                 </div>

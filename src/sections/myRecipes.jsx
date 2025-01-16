@@ -2,6 +2,7 @@ import React, {useState, useEffect} from "react";
 import NavBar from "../components/navbar";
 import {RecipeCardComponent} from "../components/card.jsx";
 import {CreateRecipeModal} from "../components/modal.jsx";
+import SearchBarComponent from "../components/searchBar.jsx";
 
 function MyRecipes() {
     const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage
@@ -81,12 +82,7 @@ function MyRecipes() {
                             />
 
                         )}
-                        <input
-                            type="text"
-                            placeholder="Search recipes..."
-                            className="flex-grow min-w-[50%] px-4 py-2 border border-green-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 hover:border-green-600"
-                            onChange={(e) => setSearchTerm(e.target.value)}
-                        />
+                        <SearchBarComponent setSearchTerm={setSearchTerm} />
                     </div>
                 </div>
                 <div className="flex flex-col items-center w-full">

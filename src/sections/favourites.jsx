@@ -1,6 +1,7 @@
 import NavBar from "../components/navbar";
 import React, { useState, useEffect } from "react";
-import {RecipeCardComponent} from "../components/card.jsx"; // Import useNavigate
+import {RecipeCardComponent} from "../components/card.jsx";
+import SearchBarComponent from "../components/searchBar.jsx";
 
 function Favourites() {
 
@@ -10,6 +11,7 @@ function Favourites() {
   const userId = localStorage.getItem('Id'); // Assuming userId is stored in localStorage
   const token = localStorage.getItem('Token'); // Assuming userId is stored in localStorage
   const [refreshTrigger, setRefreshTrigger] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const refreshRecipes = () => {
     setRefreshTrigger((prev) => !prev);
@@ -45,6 +47,12 @@ function Favourites() {
     fetchRecipes();
   }, [userId, refreshTrigger]); // Re-run the effect if userId changes
 
+  const filteredRecipes = recipes.filter((recipe) =>
+      recipe.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  console.log(recipes)
+
   return (
     <>
       <NavBar />
@@ -52,12 +60,7 @@ function Favourites() {
         <div className="flex items-center justify-between w-full px-8 py-4 bg-white shadow-md">
           <h2 className="text-2xl font-bold text-gray-800">My Recipe Favourites</h2>
           <div className="flex items-center space-x-11">
-
-            <input
-              type="text"
-              placeholder="Search recipes..."
-              className="flex-grow min-w-[50%] px-4 py-2 border border-green-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 hover:border-green-600"
-            />
+            <SearchBarComponent setSearchTerm={setSearchTerm} />
           </div>
         </div>
         <div className="flex flex-col items-center w-full">
@@ -72,8 +75,8 @@ function Favourites() {
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
-              {recipes.map((recipe) => (
+            <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-8">
+              {filteredRecipes.map((recipe) => (
                   <RecipeCardComponent key={recipe.id} recipe={recipe} isFavouriteProp={true} refreshRecipes={refreshRecipes} />
               ))}
             </div>
